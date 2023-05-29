@@ -79,7 +79,7 @@ const displayMovements = function (movements) {
     containerMovements.insertAdjacentHTML('afterbegin', html)
   });
 }
-displayMovements(account1.movements)
+// displayMovements(account1.movements)
 
 const createUsernames = function (accs) {
   accs.forEach(function (acc) {
@@ -91,23 +91,26 @@ const createUsernames = function (accs) {
   })
 }
 
-const calcDisplayBalance = function (movements) {
-  const balance = movements.reduce((acc, mov) => acc + mov, 0);
-  labelBalance.textContent = `${balance} €`;
-}
-calcDisplayBalance(account1.movements)
+const calcDisplayBalance = function (account) {
+  //creating a new property for an object - balance and displaying it right away
+  account.balance = account.movements.reduce((acc, mov) => acc + mov, 0);
+  labelBalance.textContent = `${account.balance} €`;
 
-const calcDisplaySummary = function (movements) {
-  const incomes = movements.filter(mov => mov > 0)
+}
+// calcDisplayBalance(account1.movements)
+
+const calcDisplaySummary = function (account) {
+  const incomes = account.movements
+    .filter(mov => mov > 0)
     .reduce((acc, mov) => acc + mov, 0);
   labelSumIn.textContent = `${incomes} €`
 
-  const outs = movements.filter(mov => mov < 0)
+  const outs = account.movements.filter(mov => mov < 0)
     .reduce((acc, mov) => acc + mov, 0);
   labelSumOut.textContent = `${Math.abs(outs)} €`
 
-  const interest = movements.filter(mov => mov > 0)
-    .map(deposit => deposit * 1.2 / 100)
+  const interest = account.movements.filter(mov => mov > 0)
+    .map(deposit => deposit * account.interestRate / 100)
     .filter((int, i, arr) => {
       console.log(arr);
       return int >= 1;
@@ -117,7 +120,55 @@ const calcDisplaySummary = function (movements) {
 
 }
 
-calcDisplaySummary(account1.movements);
+const updateUI = function (acc) {
+  //display movements
+  displayMovements(acc.movements);
+  //display balance
+  calcDisplayBalance(acc)
+  //display summary
+  calcDisplaySummary(acc)
+  //empty input fields
+}
+
+let currentAccount;
+//event handler login button
+btnLogin.addEventListener('click', function (e) {
+  e.preventDefault()
+  // .find can find a whole daym object
+  currentAccount = accounts.find(acc => acc.username === inputLoginUsername.value)
+  console.log(currentAccount);
+
+  if (currentAccount?.pin === Number(inputLoginPin.value)) { //input.value is always a string
+    //Display UI and a welcome message
+    labelWelcome.textContent = `Welcome back, ${currentAccount.owner.split(' ')[0]}`
+    containerApp.style.opacity = 100;
+    inputLoginUsername.value = inputLoginPin.value = '';
+    inputLoginPin.blur()
+
+    updateUI(currentAccount)
+
+    console.log('LOgged in');
+  }
+});
+
+btnTransfer.addEventListener('click', function (e) {
+  e.preventDefault();
+  const amount = Number(inputTransferAmount.value);
+  const recieverAcc = accounts.find(acc => acc.username === inputTransferTo.value);
+  console.log(amount, recieverAcc);
+
+  inputTransferAmount.value = inputTransferTo.value = ''
+  if (amount > 0 &&
+    recieverAcc && currentAccount.balance >= amount
+    && recieverAcc?.username !== currentAccount.username) {
+    currentAccount.movements.push(-amount);
+    recieverAcc.movements.push(amount);
+
+    updateUI(currentAccount)
+  }
+})
+
+// calcDisplaySummary(account1.movements);
 
 createUsernames(accounts); //turn to stw, first letters
 console.log(accounts)
