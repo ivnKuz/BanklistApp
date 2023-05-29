@@ -61,16 +61,119 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
+const displayMovements = function (movements) {
+  //emptying the container before filling it
+  containerMovements.innerHTML = '';
+  movements.forEach(function (mov, i) {
+    //if its more than 0 then add deposit class, if not then its a withdrawal
+    const type = mov > 0 ? 'deposit' : 'withdrawal'
+    //creating html to create a row for withdrawal or deposit in movements
+    const html = `
+    <div class="movements__row">
+    <div class="movements__type 
+    movements__type--${type}">${i + 1} ${type}</div>
+    <div class="movements__value">${mov}</div>
+    </div>
+  `
+    //afterbegin places the HTML in this way: <div> 'afterbegin' foo 'beforeend' </div> like that. See MDN docs for more details
+    containerMovements.insertAdjacentHTML('afterbegin', html)
+  });
+}
+displayMovements(account1.movements)
+
+const createUsernames = function (accs) {
+  accs.forEach(function (acc) {
+    acc.username = acc.owner //creating a new property in account object named username
+      .toLowerCase()
+      .split(' ')
+      .map(name => name[0])
+      .join(''); // map() returns new array, then we join it into one string
+  })
+}
+
+const calcDisplayBalance = function (movements) {
+  const balance = movements.reduce((acc, mov) => acc + mov, 0);
+  labelBalance.textContent = `${balance} €`;
+}
+calcDisplayBalance(account1.movements)
+
+const calcDisplaySummary = function (movements) {
+  const incomes = movements.filter(mov => mov > 0)
+    .reduce((acc, mov) => acc + mov, 0);
+  labelSumIn.textContent = `${incomes} €`
+
+  const outs = movements.filter(mov => mov < 0)
+    .reduce((acc, mov) => acc + mov, 0);
+  labelSumOut.textContent = `${Math.abs(outs)} €`
+
+  const interest = movements.filter(mov => mov > 0)
+    .map(deposit => deposit * 1.2 / 100)
+    .filter((int, i, arr) => {
+      console.log(arr);
+      return int >= 1;
+    })
+    .reduce((acc, int) => acc + int, 0);
+  labelSumInterest.textContent = `${interest} €`
+
+}
+
+calcDisplaySummary(account1.movements);
+
+createUsernames(accounts); //turn to stw, first letters
+console.log(accounts)
+
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
 
-const currencies = new Map([
-  ['USD', 'United States dollar'],
-  ['EUR', 'Euro'],
-  ['GBP', 'Pound sterling'],
-]);
+// const currencies = new Map([
+//   ['USD', 'United States dollar'],
+//   ['EUR', 'Euro'],
+//   ['GBP', 'Pound sterling'],
+// ]);
 
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 /////////////////////////////////////////////////
+
+const deposit = movements.filter(function (mov) {
+  return mov > 0;
+});
+
+const withdrawals = movements.filter(mov => mov < 0);
+
+//accumulator --> snowball
+const balance = movements.reduce(function (accum, curr, i, arr) {
+  console.log(`iteration ${i}: ${accum}`)
+  return accum + curr
+}, 0)
+
+console.log(movements);
+console.log(deposit)
+console.log(withdrawals)
+console.log(balance)
+
+//maximum value
+
+const max = movements.reduce((accumulator, current) => accumulator > current ? accumulator : current, movements[0])
+/* 
+ {
+  if(acc > curr){
+    return acc;
+  }else{
+    return curr;
+  }
+}, movements[0]
+*/
+
+console.log(max)
+
+const eurToUSD = 1.1;
+const totalDepositsUSD = movements
+  .filter(mov => mov > 0)
+  .map(mov => mov * eurToUSD)
+  .reduce((acc, mov) => acc + mov, 0);
+
+
+
+console.log(totalDepositsUSD)
