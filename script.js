@@ -244,3 +244,5 @@ const totalDepositsUSD = movements
 
 
 console.log(totalDepositsUSD)
+
+const anyDEposits = movements.some(mov => mov > 0)
