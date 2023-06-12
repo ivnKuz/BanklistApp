@@ -190,7 +190,6 @@ createUsernames(accounts); //turn to stw, first letters
 console.log(accounts)
 
 /////////////////////////////////////////////////
-/////////////////////////////////////////////////
 // LECTURES
 
 // const currencies = new Map([
@@ -223,15 +222,7 @@ console.log(balance)
 //maximum value
 
 const max = movements.reduce((accumulator, current) => accumulator > current ? accumulator : current, movements[0])
-/* 
- {
-  if(acc > curr){
-    return acc;
-  }else{
-    return curr;
-  }
-}, movements[0]
-*/
+
 
 console.log(max)
 
