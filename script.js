@@ -251,16 +251,47 @@ const totalDepositsUSD = movements
 console.log(totalDepositsUSD)
 //check by condition, returns true or false
 // SOME condition
-console.log(movements.some(mov =>  mov === -130));
+// console.log(movements.some(mov =>  mov === -130));
 
-const anyDEposits = movements.some(mov => mov > 0)
-console.log(anyDEposits);
+// const anyDEposits = movements.some(mov => mov > 0)
+// console.log(anyDEposits);
 
-//every only returns true if every element in the array satisfy the condition
-console.log(account4.movements.every(mov => mov > 0));
+// //every only returns true if every element in the array satisfy the condition
+// console.log(account4.movements.every(mov => mov > 0));
 
-//separate callback
-const depostt = mov => mov > 0;
-console.log(movements.some(depostt));
-console.log(movements.every(depostt));
-console.log(movements.filter(depostt));
+// //separate callback
+// const depostt = mov => mov > 0;
+// console.log(movements.some(depostt));
+// console.log(movements.every(depostt));
+// console.log(movements.filter(depostt));
+
+//flat & flatMap
+const arr = [[1,2,3],[4,5,6], 7,8]
+//makes that array not nested ^
+console.log(arr.flat());
+
+const arrDeep = [[[1,2],3],[4,[5,6]], 7,8]
+//can pass an argument of how many levels deep we want to go, so 2 will be the same as calling flat two times
+console.log(arrDeep.flat(2));
+
+// const accountMovements = accounts.map(acc => acc.movements)
+// console.log(accountMovements);
+// const allMovements = accountMovements.flat()
+// console.log(allMovements);
+
+// const overallBalance = allMovements.reduce((acc,mov)=> acc + mov, 0);
+// console.log(overallBalance);
+
+//chained
+const overallBalance = accounts.map(acc => acc.movements)
+.flat()
+.reduce((acc,mov)=> acc + mov, 0);
+console.log(overallBalance);
+
+//flatMap
+//flatMap can only go 1 level deep, if you need go in more levels use flat()
+const overallBalance2 = accounts
+.flatMap(acc => acc.movements)
+.reduce((acc,mov)=> acc + mov, 0);
+console.log(overallBalance2);
+
