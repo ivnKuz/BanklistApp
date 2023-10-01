@@ -61,10 +61,12 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
-const displayMovements = function (movements) {
+const displayMovements = function (movements, sort = false) {
   //emptying the container before filling it
   containerMovements.innerHTML = '';
-  movements.forEach(function (mov, i) {
+  //slice to copy, not modify og array, if true then it will sort movements in the descending order
+  const movs = sort ? movements.slice().sort((curr,next) => curr-next) : movements;
+  movs.forEach(function (mov, i) {
     //if its more than 0 then add deposit class, if not then its a withdrawal
     const type = mov > 0 ? 'deposit' : 'withdrawal'
     //creating html to create a row for withdrawal or deposit in movements
@@ -166,6 +168,15 @@ btnClose.addEventListener('click', function (e) {
   inputCloseUsername.value = inputClosePin.value = '';
 
 })
+
+let sorted = false;
+btnSort.addEventListener('click', function(e){
+  e.preventDefault();
+  displayMovements(currentAccount.movements, !sorted);
+  sorted = !sorted;
+})
+
+
 btnLoan.addEventListener('click', function(e){
   e.preventDefault();
   const amount = Number(inputLoanAmount.value);
@@ -266,13 +277,13 @@ console.log(totalDepositsUSD)
 // console.log(movements.filter(depostt));
 
 //flat & flatMap
-const arr = [[1,2,3],[4,5,6], 7,8]
-//makes that array not nested ^
-console.log(arr.flat());
+// const arr = [[1,2,3],[4,5,6], 7,8]
+// //makes that array not nested ^
+// console.log(arr.flat());
 
-const arrDeep = [[[1,2],3],[4,[5,6]], 7,8]
-//can pass an argument of how many levels deep we want to go, so 2 will be the same as calling flat two times
-console.log(arrDeep.flat(2));
+// const arrDeep = [[[1,2],3],[4,[5,6]], 7,8]
+// //can pass an argument of how many levels deep we want to go, so 2 will be the same as calling flat two times
+// console.log(arrDeep.flat(2));
 
 // const accountMovements = accounts.map(acc => acc.movements)
 // console.log(accountMovements);
@@ -283,15 +294,38 @@ console.log(arrDeep.flat(2));
 // console.log(overallBalance);
 
 //chained
-const overallBalance = accounts.map(acc => acc.movements)
-.flat()
-.reduce((acc,mov)=> acc + mov, 0);
-console.log(overallBalance);
+// const overallBalance = accounts.map(acc => acc.movements)
+// .flat()
+// .reduce((acc,mov)=> acc + mov, 0);
+// console.log(overallBalance);
 
-//flatMap
-//flatMap can only go 1 level deep, if you need go in more levels use flat()
-const overallBalance2 = accounts
-.flatMap(acc => acc.movements)
-.reduce((acc,mov)=> acc + mov, 0);
-console.log(overallBalance2);
+// //flatMap
+// //flatMap can only go 1 level deep, if you need go in more levels use flat()
+// const overallBalance2 = accounts
+// .flatMap(acc => acc.movements)
+// .reduce((acc,mov)=> acc + mov, 0);
+// console.log(overallBalance2);
+
+// //string
+// const owners = ['Jonas','Zack','Adam', 'Martha']
+// console.log(owners.sort());
+// //array is now mutated, not copied
+// console.log(owners);
+
+// //numbers
+// //sort() only works with strings, so if we pass numbers it converts it to strings and sorts it that way, so its not really sorting
+// //them correctly
+// console.log(movements);
+// console.log(movements.sort());
+// //a is the current value, b is the next value in the array
+// //return < 0, A before B
+// //return > 0 B before A
+// movements.sort((a,b)=>{
+// if(a > b)  return 1; 
+// if(b > a)  return -1;
+// })
+// //same but improved
+// movements.sort((a,b)=> a - b)
+// console.log(movements);
+
 
