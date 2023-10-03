@@ -74,7 +74,7 @@ const displayMovements = function (movements, sort = false) {
     <div class="movements__row">
     <div class="movements__type 
     movements__type--${type}">${i + 1} ${type}</div>
-    <div class="movements__value">${mov}</div>
+    <div class="movements__value">${mov.toFixed(2)}€</div>
     </div>
   `
     //afterbegin places the HTML in this way: <div> 'afterbegin' foo 'beforeend' </div> like that. See MDN docs for more details
@@ -96,7 +96,7 @@ const createUsernames = function (accs) {
 const calcDisplayBalance = function (account) {
   //creating a new property for an object - balance and displaying it right away
   account.balance = account.movements.reduce((acc, mov) => acc + mov, 0);
-  labelBalance.textContent = `${account.balance} €`;
+  labelBalance.textContent = `${account.balance.toFixed(2)} €`;
 
 }
 // calcDisplayBalance(account1.movements)
@@ -105,11 +105,11 @@ const calcDisplaySummary = function (account) {
   const incomes = account.movements
     .filter(mov => mov > 0)
     .reduce((acc, mov) => acc + mov, 0);
-  labelSumIn.textContent = `${incomes} €`
+  labelSumIn.textContent = `${incomes.toFixed(2)} €`
 
   const outs = account.movements.filter(mov => mov < 0)
     .reduce((acc, mov) => acc + mov, 0);
-  labelSumOut.textContent = `${Math.abs(outs)} €`
+  labelSumOut.textContent = `${Math.abs(outs.toFixed(2))} €`
 
   const interest = account.movements.filter(mov => mov > 0)
     .map(deposit => deposit * account.interestRate / 100)
@@ -118,7 +118,7 @@ const calcDisplaySummary = function (account) {
       return int >= 1;
     })
     .reduce((acc, int) => acc + int, 0);
-  labelSumInterest.textContent = `${interest} €`
+  labelSumInterest.textContent = `${interest.toFixed(2)} €`
 
 }
 
@@ -179,7 +179,7 @@ btnSort.addEventListener('click', function (e) {
 
 btnLoan.addEventListener('click', function (e) {
   e.preventDefault();
-  const amount = Number(inputLoanAmount.value);
+  const amount = Math.floor(inputLoanAmount.value);
 
   // loan can only be granted if there's a deposit of 10% or more of the loan
   if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
@@ -321,28 +321,62 @@ const totalDepositsUSD = movements
 // //return < 0, A before B
 // //return > 0 B before A
 // movements.sort((a,b)=>{
-// if(a > b)  return 1; 
+// if(a > b)  return 1;
 // if(b > a)  return -1;
 // })
 // //same but improved
 // movements.sort((a,b)=> a - b)
 // console.log(movements);
 
+//_________________--CONVERSION_______________
 //Base 10 - 0 to 9. 1/10 = 0.1 3/10 = 3.333333
 //Binary base 2 - 0 or 1
-console.log(0.1 + 0.2 === 0.3);
+// console.log(0.1 + 0.2 === 0.3);
 
-//conversion known + on string or NUmber('12');\
-//Parsing
-console.log(Number.parseInt('30px', 10)); //30 second arguument is num system we work with 10 is base 10, 2 can be binary
-console.log(Number.parseInt('e23', 10)); //NaN output
-console.log(Number.parseFloat('2.5rem')); //2.5 parseInt will result in just 2
-//check if value is not a number
-console.log(Number.isNaN(20)); //false, checks if its not a number
-console.log(Number.isNaN(+'20x'));
-console.log(Number.isNaN(23 / 0)); //false cuz its infinity
-//check if value is a number
-console.log(Number.isFinite(20));//is a number true
-console.log(Number.isFinite('20')); //false
+// //conversion known + on string or NUmber('12');\
+// //Parsing
+// console.log(Number.parseInt('30px', 10)); //30 second arguument is num system we work with 10 is base 10, 2 can be binary
+// console.log(Number.parseInt('e23', 10)); //NaN output
+// console.log(Number.parseFloat('2.5rem')); //2.5 parseInt will result in just 2
+// //check if value is not a number
+// console.log(Number.isNaN(20)); //false, checks if its not a number
+// console.log(Number.isNaN(+'20x'));
+// console.log(Number.isNaN(23 / 0)); //false cuz its infinity
+// //check if value is a number
+// console.log(Number.isFinite(20));//is a number true
+// console.log(Number.isFinite('20')); //false
 
 
+//_________MATH AND ROUNDING___________
+console.log(Math.sqrt(25));//square route
+console.log(25 == 1 / 2);
+console.log(8 == 1 / 3);
+
+console.log(Math.max(5, 18, 23, 11, 2));
+console.log(Math.min(5, 19, 23, 2, 56, 22));
+
+//radius of a circle with 10px
+console.log(Math.PI + Number.parseFloat('10px') ** 2);
+
+
+console.log(Math.trunc(Math.random() * 6) + 1);
+
+const randomInt = (min, max) => Math.floor(Math.random() * (max - min) + 1) + min;
+//0...1 0...(max - min) -> min...max will stay always between min and max
+console.log(randomInt(10, 20));
+
+
+//Rounding integers
+//The Math.trunc() static method returns the integer part of a number by removing any fractional digits.
+console.log(Math.trunc(23.3));
+//as usual rounding will round to nearest decimal num
+console.log(Math.round(23.3));//23
+console.log(Math.round(23.9));//24
+console.log(Math.ceil(23.3)); //always up
+console.log(Math.floor(23.3)); //always down
+
+console.log(Math.trunc(-23.3));//-23
+console.log(Math.floor(-23.3));//-24
+
+//rounding decimals
+console.log((2.7).toFixed(0)); //will return string tho, rounding 
