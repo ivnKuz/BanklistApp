@@ -348,35 +348,43 @@ const totalDepositsUSD = movements
 
 
 //_________MATH AND ROUNDING___________
-console.log(Math.sqrt(25));//square route
-console.log(25 == 1 / 2);
-console.log(8 == 1 / 3);
+// console.log(Math.sqrt(25));//square route
+// console.log(25 == 1 / 2);
+// console.log(8 == 1 / 3);
 
-console.log(Math.max(5, 18, 23, 11, 2));
-console.log(Math.min(5, 19, 23, 2, 56, 22));
+// console.log(Math.max(5, 18, 23, 11, 2));
+// console.log(Math.min(5, 19, 23, 2, 56, 22));
 
-//radius of a circle with 10px
-console.log(Math.PI + Number.parseFloat('10px') ** 2);
-
-
-console.log(Math.trunc(Math.random() * 6) + 1);
-
-const randomInt = (min, max) => Math.floor(Math.random() * (max - min) + 1) + min;
-//0...1 0...(max - min) -> min...max will stay always between min and max
-console.log(randomInt(10, 20));
+// //radius of a circle with 10px
+// console.log(Math.PI + Number.parseFloat('10px') ** 2);
 
 
-//Rounding integers
-//The Math.trunc() static method returns the integer part of a number by removing any fractional digits.
-console.log(Math.trunc(23.3));
-//as usual rounding will round to nearest decimal num
-console.log(Math.round(23.3));//23
-console.log(Math.round(23.9));//24
-console.log(Math.ceil(23.3)); //always up
-console.log(Math.floor(23.3)); //always down
+// console.log(Math.trunc(Math.random() * 6) + 1);
 
-console.log(Math.trunc(-23.3));//-23
-console.log(Math.floor(-23.3));//-24
+// const randomInt = (min, max) => Math.floor(Math.random() * (max - min) + 1) + min;
+// //0...1 0...(max - min) -> min...max will stay always between min and max
+// console.log(randomInt(10, 20));
 
-//rounding decimals
-console.log((2.7).toFixed(0)); //will return string tho, rounding 
+
+// //Rounding integers
+// //The Math.trunc() static method returns the integer part of a number by removing any fractional digits.
+// console.log(Math.trunc(23.3));
+// //as usual rounding will round to nearest decimal num
+// console.log(Math.round(23.3));//23
+// console.log(Math.round(23.9));//24
+// console.log(Math.ceil(23.3)); //always up
+// console.log(Math.floor(23.3)); //always down
+
+// console.log(Math.trunc(-23.3));//-23
+// console.log(Math.floor(-23.3));//-24
+
+// //rounding decimals
+// console.log((2.7).toFixed(0)); //will return string tho, rounding
+
+
+// labelBalance.addEventListener('click', function () {
+//   [...document.querySelectorAll('.movements__row')].forEach(function (row, i) {
+//     if (i % 2 === 0) row.style.backgroundColor = 'orangered';
+//   })
+// })
+
