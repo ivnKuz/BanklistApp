@@ -65,7 +65,7 @@ const displayMovements = function (movements, sort = false) {
   //emptying the container before filling it
   containerMovements.innerHTML = '';
   //slice to copy, not modify og array, if true then it will sort movements in the descending order
-  const movs = sort ? movements.slice().sort((curr,next) => curr-next) : movements;
+  const movs = sort ? movements.slice().sort((curr, next) => curr - next) : movements;
   movs.forEach(function (mov, i) {
     //if its more than 0 then add deposit class, if not then its a withdrawal
     const type = mov > 0 ? 'deposit' : 'withdrawal'
@@ -170,19 +170,19 @@ btnClose.addEventListener('click', function (e) {
 })
 
 let sorted = false;
-btnSort.addEventListener('click', function(e){
+btnSort.addEventListener('click', function (e) {
   e.preventDefault();
   displayMovements(currentAccount.movements, !sorted);
   sorted = !sorted;
 })
 
 
-btnLoan.addEventListener('click', function(e){
+btnLoan.addEventListener('click', function (e) {
   e.preventDefault();
   const amount = Number(inputLoanAmount.value);
 
-// loan can only be granted if there's a deposit of 10% or more of the loan
-  if(amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)){
+  // loan can only be granted if there's a deposit of 10% or more of the loan
+  if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
     //add movement
     currentAccount.movements.push(amount);
 
@@ -257,9 +257,9 @@ const totalDepositsUSD = movements
   .map(mov => mov * eurToUSD)
   .reduce((acc, mov) => acc + mov, 0);
 
+//______________________________TRAINING GROUNDS weeeeeeeeeeeeee____________________________
 
-
-console.log(totalDepositsUSD)
+// console.log(totalDepositsUSD)
 //check by condition, returns true or false
 // SOME condition
 // console.log(movements.some(mov =>  mov === -130));
@@ -327,5 +327,22 @@ console.log(totalDepositsUSD)
 // //same but improved
 // movements.sort((a,b)=> a - b)
 // console.log(movements);
+
+//Base 10 - 0 to 9. 1/10 = 0.1 3/10 = 3.333333
+//Binary base 2 - 0 or 1
+console.log(0.1 + 0.2 === 0.3);
+
+//conversion known + on string or NUmber('12');\
+//Parsing
+console.log(Number.parseInt('30px', 10)); //30 second arguument is num system we work with 10 is base 10, 2 can be binary
+console.log(Number.parseInt('e23', 10)); //NaN output
+console.log(Number.parseFloat('2.5rem')); //2.5 parseInt will result in just 2
+//check if value is not a number
+console.log(Number.isNaN(20)); //false, checks if its not a number
+console.log(Number.isNaN(+'20x'));
+console.log(Number.isNaN(23 / 0)); //false cuz its infinity
+//check if value is a number
+console.log(Number.isFinite(20));//is a number true
+console.log(Number.isFinite('20')); //false
 
 
