@@ -329,4 +329,12 @@ const totalDepositsUSD = movements
 // console.log(movements);
 
 
-//test
+//Dates
+
+const now = new Date()
+console.log(now);
+
+console.log(new Date('December 24, 2015')); //will show this date in date format
+console.log(new Date(account1.movementDates[0]));
+
+
